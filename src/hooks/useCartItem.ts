@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
-import { addItem, removeItem, setQuantity } from "../store/cart/cartSlice";
+import { addItem, removeItem, decrementItem } from "../store/cart/cartSlice";
 import { Product } from "../data/products";
 import { useCallback } from "react";
 
@@ -40,31 +40,15 @@ export const useCartItem = (product?: Product) => {
 
   // Increment quantity by 1
   const increment = useCallback(() => {
-    if (product && cartItem) {
-      dispatch(setQuantity({ id: product.id, quantity: cartItem.quantity + 1 }));
+    if (product) {
+      dispatch(addItem(product));
     }
-  }, [dispatch, product, cartItem]);
+  }, [dispatch, product]);
 
   // Decrement quantity by 1 (removes if quantity would be 0)
   const decrement = useCallback(() => {
-    if (product && cartItem) {
-      const newQuantity = cartItem.quantity - 1;
-      if (newQuantity > 0) {
-        dispatch(setQuantity({ id: product.id, quantity: newQuantity }));
-      } else {
-        dispatch(removeItem(product.id));
-      }
-    }
-  }, [dispatch, product, cartItem]);
-
-  // Set specific quantity
-  const updateQuantity = useCallback((quantity: number) => {
     if (product) {
-      if (quantity > 0) {
-        dispatch(setQuantity({ id: product.id, quantity }));
-      } else {
-        dispatch(removeItem(product.id));
-      }
+      dispatch(decrementItem(product.id));
     }
   }, [dispatch, product]);
 
@@ -82,6 +66,5 @@ export const useCartItem = (product?: Product) => {
     removeFromCart,
     increment,
     decrement,
-    updateQuantity,
   };
 };
