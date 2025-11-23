@@ -227,7 +227,105 @@ const forYouItems: Product[] = [
   },
 ];
 
+const newArrivalsItems: Product[] = [
+  {
+    id: "na1",
+    name: "Mechanical Keyboard",
+    price: 5499,
+    rating: 4.8,
+    images: [
+      "https://images.pexels.com/photos/2115257/pexels-photo-2115257.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1772123/pexels-photo-1772123.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/2582928/pexels-photo-2582928.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1336990/pexels-photo-1336990.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
+    tags: ["New arrival", "Gaming"],
+    description:
+      "RGB mechanical keyboard with customizable keys and tactile feedback for gamers and typists.",
+  },
+  {
+    id: "na2",
+    name: "Portable Charger 20000mAh",
+    price: 2299,
+    rating: 4.6,
+    images: [
+      "https://images.pexels.com/photos/4224099/pexels-photo-4224099.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4226256/pexels-photo-4226256.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4195330/pexels-photo-4195330.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/7242908/pexels-photo-7242908.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
+    tags: ["New arrival", "Fast charging"],
+    description:
+      "High-capacity portable charger with dual USB ports and LED display for battery level.",
+  },
+  {
+    id: "na3",
+    name: "4K Webcam",
+    price: 8999,
+    rating: 4.7,
+    images: [
+      "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/2606383/pexels-photo-2606383.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/63690/pexels-photo-63690.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
+    tags: ["New arrival", "Top rated"],
+    description:
+      "Ultra HD 4K webcam with auto-focus, built-in microphone, and wide-angle lens for streaming.",
+  },
+  {
+    id: "na4",
+    name: "Gaming Mouse Pad XXL",
+    price: 1299,
+    rating: 4.5,
+    images: [
+      "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1194420/pexels-photo-1194420.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/9072316/pexels-photo-9072316.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
+    tags: ["New arrival", "Extended"],
+    description:
+      "Extra-large gaming mouse pad with RGB lighting and anti-slip rubber base for desktop setup.",
+  },
+  {
+    id: "na5",
+    name: "Noise Cancelling Earbuds",
+    price: 3499,
+    rating: 4.9,
+    images: [
+      "https://images.pexels.com/photos/3825517/pexels-photo-3825517.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4226881/pexels-photo-4226881.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/3825529/pexels-photo-3825529.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/8000623/pexels-photo-8000623.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
+    tags: ["New arrival", "Best seller"],
+    description:
+      "True wireless earbuds with active noise cancellation and 24-hour battery life with charging case.",
+  },
+  {
+    id: "na6",
+    name: "USB-C Hub 7-in-1",
+    price: 2799,
+    rating: 4.4,
+    images: [
+      "https://images.pexels.com/photos/4226256/pexels-photo-4226256.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/5081914/pexels-photo-5081914.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4195325/pexels-photo-4195325.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/7242908/pexels-photo-7242908.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/4224099/pexels-photo-4224099.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/163100/circuit-circuit-board-resistor-computer-163100.jpeg?auto=compress&cs=tinysrgb&w=800",
+    ],
+    tags: ["New arrival", "Multi-port"],
+    description:
+      "Compact USB-C hub with HDMI, SD card reader, USB 3.0 ports, and 100W power delivery.",
+  },
+];
+
 export const PRODUCTS = {
   products: productItems,
   forYou: forYouItems,
+  newArrivals: newArrivalsItems,
 };

@@ -25,7 +25,8 @@ export const fetchProducts = (): Promise<typeof PRODUCTS> => {
 export const fetchProductDetails = (productId: string): Promise<typeof PRODUCTS.products[0] | null> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const allProducts = [...PRODUCTS.products, ...PRODUCTS.forYou];
+      // Dynamically gather all products from all keys in PRODUCTS object
+      const allProducts = Object.values(PRODUCTS).flat();
       const product = allProducts.find(p => p.id === productId);
       resolve(product || null);
     }, NETWORK_DELAY);

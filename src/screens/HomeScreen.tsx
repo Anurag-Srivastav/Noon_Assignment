@@ -26,6 +26,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<Product[]>([]);
   const [forYou, setForYou] = useState<Product[]>([]);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
   const { renderShimmer } = useShimmer(SCREENS.HOME);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function HomeScreen() {
         const data = await getAllProducts();
         setProducts(data?.products);
         setForYou(data?.forYou);
+        setNewArrivals(data?.newArrivals);
       } catch (error) {
         console.error('Failed to fetch products:', error);
       } finally {
@@ -82,17 +84,16 @@ export default function HomeScreen() {
           products={products}
         />
 
-        <ThreeCardCarousel
+         <ThreeCardCarousel
           title={LABELS.THINGS_YOU_MIGHT_LIKE}
           data={forYou}
         />
 
-        <ProductCarousel
-          title={LABELS.FEATURED}
-          products={products}
+         <ProductCarousel
+          title={LABELS.NEW_ARRIVALS}
+          products={newArrivals}
         />
 
-        
       </ScrollView>
       <StickyCartBar onPressCart={handleCartPress} />
     </SafeAreaView>

@@ -37,6 +37,7 @@ function ProductCarousel({
 const styles = StyleSheet.create({
   container: {
     marginVertical: vh(16),
+    backgroundColor : 'transparent'
   },
   scrollContent: {
     paddingHorizontal: vw(4),

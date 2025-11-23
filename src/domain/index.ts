@@ -6,6 +6,7 @@
 
 import { fetchProducts, fetchProductDetails, fetchCart, placeOrder, processPayment, fetchPaymentMethods, PaymentMethod, ProcessPaymentPayload } from '../data/api';
 import type { Product } from '../data/products';
+import { PRODUCTS } from '../data/products';
 import type { CartItem } from '../store/cart/cartSlice';
 import { DELIVERY, TAX } from '../constants';
 
@@ -19,12 +20,14 @@ import { DELIVERY, TAX } from '../constants';
 export const getAllProducts = async (): Promise<{
   products: Product[];
   forYou: Product[];
+  newArrivals: Product[];
 }> => {
   try {
     const data = await fetchProducts();
     return {
       products: data.products,
       forYou: data.forYou,
+      newArrivals: data.newArrivals,
     };
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -52,8 +55,7 @@ export const getProductById = async (productId: string): Promise<Product | null>
  * Search products by query
  */
 export const searchProducts = async (
-  query: string,
-  allProducts: Product[]
+  query: string
 ): Promise<Product[]> => {
   try {
     if (!query.trim()) {
@@ -61,6 +63,9 @@ export const searchProducts = async (
     }
     
     const normalizedQuery = query.toLowerCase();
+    // Dynamically gather all products from all keys in PRODUCTS object
+    const allProducts = Object.values(PRODUCTS).flat();
+    
     return allProducts.filter(product =>
       product.name.toLowerCase().includes(normalizedQuery) ||
       product.description?.toLowerCase().includes(normalizedQuery) ||

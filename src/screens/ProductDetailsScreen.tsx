@@ -17,7 +17,7 @@ import CustomButton from "../components/CustomButton";
 import Tag from "../components/Tag";
 import StarRating from "../components/StarRating";
 import { vh, vw } from "../utils/dimensions";
-import { COLORS, LABELS, SCREENS } from "../constants";
+import { COLORS, LABELS, SCREENS, ICONS } from "../constants";
 import { useShimmer } from "../hooks/useShimmer";
 import { getProductById } from "../domain";
 import QuantityControl from "../components/QuantityControl";
@@ -117,7 +117,7 @@ export default function ProductDetailsScreen() {
           <CustomButton
             title={LABELS.ADD_TO_CART}
             onPress={addToCart}
-            icon="cart-outline"
+            icon={ICONS.CART_OUTLINE}
           />
         ) : (
           <View style={styles.twoButtonContainer}>
@@ -133,7 +133,7 @@ export default function ProductDetailsScreen() {
               <CustomButton
                 title={LABELS.VIEW_CART}
                 onPress={() => navigation.navigate(SCREENS.CART)}
-                icon="cart-outline"
+                icon={ICONS.CART_OUTLINE}
               />
             </View>
           </View>

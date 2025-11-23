@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   SafeAreaView,
   View,
@@ -31,6 +31,20 @@ export default function SearchScreen() {
   
   const debouncedQuery = useDebounce(query, 500);
 
+  const handleBackPress = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  const handleTagPress = useCallback((item: string) => {
+    setQuery(item);
+  }, []);
+
+  const handleProductPress = useCallback((productId: string) => {
+    navigation.navigate(SCREENS.PRODUCT_DETAILS, {
+      productId,
+    });
+  }, [navigation]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -55,8 +69,7 @@ export default function SearchScreen() {
 
       setSearching(true);
       try {
-        const allProducts = [...PRODUCTS.products, ...PRODUCTS.forYou];
-        const searchResults = await search(debouncedQuery, allProducts);
+        const searchResults = await search(debouncedQuery);
         setResults(searchResults);
       } catch (error) {
         console.error('Search failed:', error);
@@ -85,9 +98,7 @@ export default function SearchScreen() {
         iconName={'chevron-back-outline'}
         value={query}
         onChangeText={setQuery}
-        onPressIcon={() => {
-          navigation.goBack();
-        }}
+        onPressIcon={handleBackPress}
       />
 
       <ScrollView
@@ -109,7 +120,7 @@ export default function SearchScreen() {
                 <Tag
                   key={idx}
                   text={item}
-                  onPress={() => setQuery(item)}
+                  onPress={() => handleTagPress(item)}
                 />
               ))}
             </View>
@@ -132,11 +143,7 @@ export default function SearchScreen() {
                   <SearchResultCard
                     key={item.id}
                     product={item}
-                    onPress={() =>
-                      navigation.navigate(SCREENS.PRODUCT_DETAILS, {
-                        productId: item.id,
-                      })
-                    }
+                    onPress={() => handleProductPress(item.id)}
                   />
                 ))}
               </View>

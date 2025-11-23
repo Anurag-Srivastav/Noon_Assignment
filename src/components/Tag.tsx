@@ -38,9 +38,9 @@ export default React.memo(Tag);
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.BLACK,
-    paddingHorizontal: vw(12),
-    paddingVertical: vh(6),
+    backgroundColor: COLORS.GRAY_LIGHT,
+    paddingHorizontal: vw(8),
+    paddingVertical: vh(4),
     borderRadius: vw(10),
     alignSelf: 'flex-start',
     marginRight: vw(8),
@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: vw(13),
-    color: COLORS.WHITE,
+    color: COLORS.BLACK,
   },
 });

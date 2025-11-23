@@ -6,7 +6,7 @@ type SearchState = {
   cache: { [key: string]: LFUCacheNode<any[]> };
 };
 
-const CACHE_CAPACITY = 20; // Maximum number of cached searches
+const CACHE_CAPACITY = 10; // Maximum number of cached searches
 
 const initialState: SearchState = {
   recent: [],
@@ -30,27 +30,6 @@ const createCacheFromState = (cacheState: { [key: string]: LFUCacheNode<any[]> }
   });
   
   return cache;
-};
-
-// Helper to serialize LFU cache to plain object with nodes
-const serializeCache = (cache: LFUCache<any[]>): { [key: string]: LFUCacheNode<any[]> } => {
-  const obj = cache.toObject();
-  const result: { [key: string]: LFUCacheNode<any[]> } = {};
-  
-  // We need to get the full node structure, not just values
-  // This requires accessing the cache's internal map
-  Object.entries(obj).forEach(([key, _value]) => {
-    const node = (cache as any).map.get(key);
-    if (node) {
-      result[key] = {
-        key: node.key,
-        value: node.value,
-        freq: node.freq,
-      };
-    }
-  });
-  
-  return result;
 };
 
 const searchSlice = createSlice({
@@ -81,21 +60,17 @@ const searchSlice = createSlice({
       // Add new search result
       cache.put(q, action.payload.results);
       
-      // Serialize back to state
-      state.cache = serializeCache(cache);
+      // Convert back to plain object - now includes full node structure
+      state.cache = cache.toObject();
     },
 
-    getCachedResults: (state, action: PayloadAction<string>) => {
+    incrementCacheFrequency: (state, action: PayloadAction<string>) => {
       const q = action.payload.toLowerCase();
       
-      // Recreate LFU cache from current state
-      const cache = createCacheFromState(state.cache);
-      
-      // Get will increment frequency
-      cache.get(q);
-      
-      // Serialize back to state to preserve frequency update
-      state.cache = serializeCache(cache);
+      // If item exists in cache, increment its frequency
+      if (state.cache[q]) {
+        state.cache[q].freq += 1;
+      }
     },
 
     clearRecentSearches: (state) => {
@@ -104,5 +79,5 @@ const searchSlice = createSlice({
   },
 });
 
-export const { addRecentSearch, cacheSearchResults, getCachedResults, clearRecentSearches } = searchSlice.actions;
+export const { addRecentSearch, cacheSearchResults, incrementCacheFrequency, clearRecentSearches } = searchSlice.actions;
 export default searchSlice.reducer;

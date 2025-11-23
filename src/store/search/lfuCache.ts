@@ -73,10 +73,14 @@ export class LFUCache<T> {
     }
   }
 
-  toObject(): Record<string, T> {
-    const obj: Record<string, T> = {};
-    this.map.forEach((node) => {
-      obj[node.key] = node.value;
+  toObject(): Record<string, LFUCacheNode<T>> {
+    const obj: Record<string, LFUCacheNode<T>> = {};
+    this.map.forEach((node, key) => {
+      obj[key] = {
+        key: node.key,
+        value: node.value,
+        freq: node.freq,
+      };
     });
     return obj;
   }

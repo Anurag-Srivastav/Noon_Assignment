@@ -1,161 +1,320 @@
-# Noon E-Commerce Mobile App
+# Noon E-Commerce Mobile App# Noon E-Commerce Mobile App
 
-A feature-rich React Native e-commerce application built with TypeScript, following Clean Architecture principles and modern best practices.
 
-## 🏗️ Architecture Overview
 
-This project follows **Clean Architecture** principles with a clear separation of concerns across three main layers:
+A React Native e-commerce app built with TypeScript, Clean Architecture, and Redux Toolkit.A feature-rich React Native e-commerce application built with TypeScript, following Clean Architecture principles and modern best practices.
 
-```
+
+
+## 🏗️ Architecture## 🏗️ Architecture Overview
+
+
+
+```This project follows **Clean Architecture** principles with a clear separation of concerns across three main layers:
+
 src/
-├── components/          # Presentation Layer (UI Components)
-├── screens/            # Presentation Layer (Screen Components)
-├── hooks/              # Business Logic Layer (Custom Hooks)
-├── domain/             # Domain Layer (Business Rules)
-├── store/              # State Management (Redux Toolkit)
-├── data/               # Data Layer (Mock Data)
-├── navigation/         # App Navigation
+
+├── components/     # UI Components (React.memo optimized)```
+
+├── screens/        # Screen Component
+
+├── hooks/          # Custom Hooks (useSearch, useCartItem, useDebounce)├── components/          # Presentation Layer (UI Components)
+
+├── domain/         # Business Logic & API Simulation├── screens/            # Presentation Layer (Screen Components)
+
+├── store/          # Redux Store (cart, search cache)├── hooks/              # Business Logic Layer (Custom Hooks)
+
+├── data/           # Mock Data├── domain/             # Domain Layer (Business Rules)
+
+├── constants/      # Colors, Labels, Screens, Icons├── store/              # State Management (Redux Toolkit)
+
+└── utils/          # Helper Functions (responsive dimensions)├── data/               # Data Layer (Mock Data)
+
+```├── navigation/         # App Navigation
+
 ├── utils/              # Utility Functions
-└── constants/          # App-wide Constants
+
+## 🎯 Key Features└── constants/          # App-wide Constants
+
 ```
 
-### Layer Responsibilities
+### 1. Clean Architecture
 
-#### 1. **Presentation Layer** (`components/` & `screens/`)
-- Pure UI components with minimal logic
+- **Centralized Constants**: All colors, labels, screens in `constants/index.ts`### Layer Responsibilities
+
+- **Component Optimization**: All components wrapped with `React.memo`
+
+- **Responsive Design**: `vw()` and `vh()` utilities for responsive layouts#### 1. **Presentation Layer** (`components/` & `screens/`)
+
+- **Custom Hooks**: Reusable business logic (search, cart, debounce, shimmer)- Pure UI components with minimal logic
+
 - Consumes data from custom hooks
-- Uses centralized constants for colors, labels, and dimensions
-- Optimized with `React.memo` for performance
 
-#### 2. **Business Logic Layer** (`hooks/`)
+### 2. LFU Cache for Search- Uses centralized constants for colors, labels, and dimensions
+
+- **Fast search**: O(1) cache lookups- Optimized with `React.memo` for performance
+
+- **Smart eviction**: Keeps most frequently accessed results
+
+- **Recent searches**: Last 10 queries tracked#### 2. **Business Logic Layer** (`hooks/`)
+
 - Custom hooks encapsulate all business logic
-- Handle API calls, state management, and side effects
-- Provide clean interfaces to UI components
-- Examples: `useSearch`, `useCartItem`, `useDebounce`, `useShimmer`
 
-#### 3. **Domain Layer** (`domain/`)
-- Pure business logic functions
-- No dependencies on React or UI
+```typescript- Handle API calls, state management, and side effects
+
+// Cache Hit - Instant results- Provide clean interfaces to UI components
+
+search("laptop") → Cache HIT (freq: 5) → Return cached results- Examples: `useSearch`, `useCartItem`, `useDebounce`, `useShimmer`
+
+
+
+// Cache Miss - Search and cache#### 3. **Domain Layer** (`domain/`)
+
+search("tablet") → Cache MISS → Filter products → Cache result (freq: 1)- Pure business logic functions
+
+```- No dependencies on React or UI
+
 - API simulation with realistic delays
-- Error handling and validation
 
-#### 4. **Data Layer** (`data/` & `store/`)
-- Mock data for products, banners, categories
+### 3. State Management- Error handling and validation
+
+- **Redux Toolkit**: Type-safe global state
+
+- **Cart Slice**: addItem, decrementItem, removeItem, clearCart#### 4. **Data Layer** (`data/` & `store/`)
+
+- **Search Slice**: LFU cache with serialization- Mock data for products, banners, categories
+
 - Redux store for global state (cart, search cache)
-- Type-safe interfaces and models
 
----
+### 4. Custom Hooks- Type-safe interfaces and models
 
-## 🎯 Key Features
+
+
+**useSearch**---
+
+```typescript
+
+const { search, recentSearches, clearRecentSearches } = useSearch();## 🎯 Key Features
+
+```
 
 ### 1. **Clean Code Architecture**
 
-#### Constants Centralization
-All magic strings, colors, dimensions, and labels are centralized in `src/constants/index.ts`:
+**useCartItem**
+
+```typescript#### Constants Centralization
+
+const { quantity, addToCart, increment, decrement } = useCartItem(product);All magic strings, colors, dimensions, and labels are centralized in `src/constants/index.ts`:
+
+```
 
 ```typescript
-export const COLORS = {
-  BLACK: '#000',
-  WHITE: '#fff',
-  // ... 30+ color constants
+
+**useDebounce**export const COLORS = {
+
+```typescript  BLACK: '#000',
+
+const debouncedQuery = useDebounce(query, 500); // 500ms delay  WHITE: '#fff',
+
+```  // ... 30+ color constants
+
 };
+
+## 📱 Screen Flows
 
 export const LABELS = {
-  ADD_TO_CART: 'Add to Cart',
-  SEARCH_RESULTS: 'Search Results',
-  // ... 50+ label constants
-};
 
-export const SCREENS = {
+**Home** → Browse products, banners, categories    ADD_TO_CART: 'Add to Cart',
+
+**Search** → LFU cached search with debouncing    SEARCH_RESULTS: 'Search Results',
+
+**Product Details** → View details, add to cart    // ... 50+ label constants
+
+**Cart** → Review items, adjust quantities  };
+
+**Checkout** → Process payment (80% success rate simulation)  
+
+**Confirmation** → Order completeexport const SCREENS = {
+
   HOME: 'Home',
-  CART: 'Cart',
+
+## 🎨 Design System  CART: 'Cart',
+
   // ... screen name constants
-};
-```
+
+**Colors**: Black/White primary, grays, success green  };
+
+**Typography**: 12-24px, weights 400-700  ```
+
+**Spacing**: vh(6-24) for consistent vertical rhythm
 
 **Benefits:**
-- Single source of truth
+
+## 🚀 Performance- Single source of truth
+
 - Easy theming and localization
-- Type-safe constant usage
-- No hardcoded strings in components
 
-#### Component Optimization
-All components are wrapped with `React.memo` for optimal performance:
+- ✅ All components memoized with `React.memo`- Type-safe constant usage
 
-```typescript
+- ✅ Callbacks memoized with `useCallback`- No hardcoded strings in components
+
+- ✅ Search results cached with LFU algorithm
+
+- ✅ Images optimized with lazy loading#### Component Optimization
+
+- ✅ Debounced search input (500ms)All components are wrapped with `React.memo` for optimal performance:
+
+
+
+## 🛠️ Tech Stack```typescript
+
 // 13 components optimized:
-- CartItem, CartItemGrid, CategoryGridItem
-- ConfirmationIndicator, CustomButton, CustomHeader
-- Image, Tag, Title, StarRating
-- OrderSummary, BannerCarousel, SearchBar
-```
 
-#### Responsive Design
+- React Native + TypeScript- CartItem, CartItemGrid, CategoryGridItem
+
+- Redux Toolkit (state management)- ConfirmationIndicator, CustomButton, CustomHeader
+
+- React Navigation (routing)- Image, Tag, Title, StarRating
+
+- React Native Vector Icons- OrderSummary, BannerCarousel, SearchBar
+
+- LFU Cache implementation```
+
+
+
+## 💡 Best Practices#### Responsive Design
+
 Custom dimension utilities for responsive layouts:
 
-```typescript
-import { vw, vh } from '../utils/dimensions';
+- **Type Safety**: 100% TypeScript coverage
 
-// Usage
+- **Clean Code**: No hardcoded strings, centralized constants```typescript
+
+- **Error Handling**: Try-catch with user-friendly messagesimport { vw, vh } from '../utils/dimensions';
+
+- **Loading States**: Shimmer skeletons for better UX
+
+- **Responsive**: Adaptive layouts with vw/vh utilities// Usage
+
 styles = StyleSheet.create({
-  container: {
+
+---  container: {
+
     width: vw(100),  // 100% of viewport width
-    height: vh(50),  // 50% of viewport height
+
+# Getting Started    height: vh(50),  // 50% of viewport height
+
   }
-});
-```
 
----
+## Prerequisites});
 
-## 🔧 Custom Hooks
+Complete the [React Native Environment Setup](https://reactnative.dev/docs/set-up-your-environment)```
 
-### 1. **useSearch** - Search with LFU Cache
-**Location:** `src/hooks/useSearch.ts`
 
-**Purpose:** Provides intelligent search functionality with Least Frequently Used (LFU) caching.
 
-**Features:**
-- LFU cache implementation for search results
-- Automatic cache invalidation
-- Recent search history management
-- Normalized query handling
+## Installation---
 
-**API:**
-```typescript
-const {
-  search,              // Search function
+
+
+### 1. Install Dependencies## 🔧 Custom Hooks
+
+```bash
+
+npm install### 1. **useSearch** - Search with LFU Cache
+
+# or**Location:** `src/hooks/useSearch.ts`
+
+yarn install
+
+```**Purpose:** Provides intelligent search functionality with Least Frequently Used (LFU) caching.
+
+
+
+### 2. iOS Setup (macOS only)**Features:**
+
+```bash- LFU cache implementation for search results
+
+bundle install- Automatic cache invalidation
+
+bundle exec pod install- Recent search history management
+
+```- Normalized query handling
+
+
+
+### 3. Start Metro**API:**
+
+```bash```typescript
+
+npm startconst {
+
+```  search,              // Search function
+
   recentSearches,      // Recent search queries
-  clearRecentSearches  // Clear history
-} = useSearch();
-```
+
+### 4. Run App  clearRecentSearches  // Clear history
+
+```bash} = useSearch();
+
+# Android```
+
+npm run android
 
 **Cache Strategy:**
-```
-1. User searches for "laptop"
-2. Check LFU cache for "laptop"
-3. If CACHE HIT:
-   - Return cached results immediately
-   - Increment frequency count
-   - Add to recent searches
-4. If CACHE MISS:
-   - Call domain layer search
-   - Cache results with frequency = 1
-   - Add to recent searches
-```
 
-**LFU Implementation:**
+# iOS```
+
+npm run ios1. User searches for "laptop"
+
+```2. Check LFU cache for "laptop"
+
+3. If CACHE HIT:
+
+## Troubleshooting   - Return cached results immediately
+
+   - Increment frequency count
+
+**Android**: Press <kbd>R</kbd> twice or <kbd>Ctrl+M</kbd> → Reload     - Add to recent searches
+
+**iOS**: Press <kbd>R</kbd> in simulator4. If CACHE MISS:
+
+   - Call domain layer search
+
+For more help, see [React Native Troubleshooting](https://reactnative.dev/docs/troubleshooting)   - Cache results with frequency = 1
+
+   - Add to recent searches
+
+---```
+
+
+
+## 📦 Project Highlights**LFU Implementation:**
+
 ```typescript
-// Cache structure
-cache = {
-  "laptop": {
-    value: [...products],
-    freq: 5  // Accessed 5 times
-  },
-  "phone": {
-    value: [...products],
+
+- **Clean Architecture** with clear separation of concerns// Cache structure
+
+- **LFU Cache** for optimized search performancecache = {
+
+- **Redux Toolkit** for type-safe state management  "laptop": {
+
+- **Custom Hooks** for reusable business logic    value: [...products],
+
+- **Centralized Constants** for easy maintenance    freq: 5  // Accessed 5 times
+
+- **100% TypeScript** for type safety  },
+
+- **React.memo** optimization on all components  "phone": {
+
+- **Responsive Design** with custom utilities    value: [...products],
+
     freq: 3  // Accessed 3 times
-  }
+
+---  }
+
 }
+
+Built with ❤️ using React Native & TypeScript
 
 // When cache is full, evict lowest frequency item
 ```
@@ -228,20 +387,14 @@ All API calls are simulated with realistic delays and error scenarios in `src/do
 #### 1. **Product Search**
 ```typescript
 export const searchProducts = async (
-  query: string,
-  products: Product[]
+  query: string
 ): Promise<Product[]> => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  // Simulate 5% error rate
-  if (Math.random() < 0.05) {
-    throw new Error('Search service unavailable');
-  }
-  
-  // Filter products
-  return products.filter(p => 
-    p.name.toLowerCase().includes(query.toLowerCase())
+  // Products imported directly from data layer
+  // Filters by name, description, and tags
+  return PRODUCTS.products.filter(product =>
+    product.name.toLowerCase().includes(query.toLowerCase()) ||
+    product.description?.toLowerCase().includes(query.toLowerCase()) ||
+    product.tags?.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
   );
 };
 ```
@@ -344,9 +497,8 @@ interface SearchState {
 #### 1. **Cache Hit (Frequent Access)**
 ```typescript
 // Query: "laptop" (freq: 3)
-getCachedResults('laptop')
-→ Increment frequency to 4
-→ Return cached products
+// Frequency is tracked internally when cache is accessed
+→ Return cached products from state.cache
 → O(1) time complexity
 ```
 

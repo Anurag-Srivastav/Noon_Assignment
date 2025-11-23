@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
-import { addRecentSearch, cacheSearchResults, getCachedResults, clearRecentSearches } from '../store/search/searchSlice';
+import { addRecentSearch, cacheSearchResults, incrementCacheFrequency, clearRecentSearches } from '../store/search/searchSlice';
 import { searchProducts } from '../domain';
 import type { Product } from '../data/products';
 
@@ -13,8 +13,7 @@ export const useSearch = () => {
 
   // Search with caching using Redux LFU cache
   const search = useCallback(async (
-    query: string,
-    allProducts: Product[]
+    query: string
   ): Promise<Product[]> => {
     const normalizedQuery = query.toLowerCase().trim();
     
@@ -24,11 +23,12 @@ export const useSearch = () => {
 
     // Check cache first
     const cachedNode = cache[normalizedQuery];
+    console.log(cache)
     if (cachedNode) {
       console.log(`Cache HIT for "${normalizedQuery}" (freq: ${cachedNode.freq})`);
       
-      // Increment frequency for LFU by dispatching getCachedResults
-      dispatch(getCachedResults(normalizedQuery));
+      // Increment frequency for LFU tracking
+      dispatch(incrementCacheFrequency(normalizedQuery));
       
       // Add to recent searches
       dispatch(addRecentSearch(query));
@@ -41,7 +41,7 @@ export const useSearch = () => {
 
     try {
       // searchProducts is synchronous (filters locally)
-      const results = await searchProducts(normalizedQuery, allProducts);
+      const results = await searchProducts(normalizedQuery);
 
       // Cache the results using Redux action
       dispatch(cacheSearchResults({ query: normalizedQuery, results }));

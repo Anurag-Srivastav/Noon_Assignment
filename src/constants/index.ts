@@ -104,6 +104,7 @@ export const LABELS = {
   NO_PRODUCTS_FOUND: 'No products found for',
   FEATURED: 'Featured',
   THINGS_YOU_MIGHT_LIKE: 'Things you might like',
+  NEW_ARRIVALS: 'New Arrivals',
   
   // App Name
   APP_NAME: 'Noon',
