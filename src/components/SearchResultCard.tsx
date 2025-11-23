@@ -11,7 +11,7 @@ type Props = {
   onPress: () => void;
 };
 
-export default function SearchResultCard({ product, onPress }: Props) {
+function SearchResultCard({ product, onPress }: Props) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
       <Image
@@ -28,6 +28,8 @@ export default function SearchResultCard({ product, onPress }: Props) {
     </TouchableOpacity>
   );
 }
+
+export default React.memo(SearchResultCard);
 
 const styles = StyleSheet.create({
   card: {

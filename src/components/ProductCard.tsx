@@ -6,24 +6,30 @@ import { vh, vw } from "../utils/dimensions";
 import { useCartItem } from "../hooks/useCartItem";
 import Tag from "./Tag";
 import StarRating from "./StarRating";
-import { COLORS, LABELS } from "../constants";
+import { COLORS, LABELS, SCREENS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   product: Product;
-  onPress?: () => void;
   cardColor?: string;
 };
 
-export default function ProductCard({
+function ProductCard({
   product,
-  onPress,
   cardColor = COLORS.WHITE,
 }: Props) {
+  const navigation = useNavigation();
   const { quantity, addToCart, increment, decrement } = useCartItem(product);
+
+  const handleCardPress = () => {
+    navigation.navigate(SCREENS.PRODUCT_DETAILS, {
+      productId: product.id,
+    } as never);
+  };
 
   return (
     <TouchableOpacity
-      onPress={onPress}
+      onPress={handleCardPress}
       activeOpacity={0.9}
       style={[styles.card, { backgroundColor: cardColor }]}
     >
@@ -66,6 +72,8 @@ export default function ProductCard({
     </TouchableOpacity>
   );
 }
+
+export default React.memo(ProductCard);
 
 const styles = StyleSheet.create({
   card: {
@@ -134,25 +142,25 @@ const styles = StyleSheet.create({
     borderRadius: vw(8),
     borderWidth: 1,
     borderColor: COLORS.GRAY_LIGHT,
-    paddingHorizontal: vw(8),
-    paddingVertical: vh(6),
+    paddingHorizontal: vw(4),
+    height: vh(30),  
     width: vw(140),
   },
   qtyButton: {
-    width: vw(28),
-    height: vw(28),
+    width: vw(22),
+    height: vw(22),
     borderRadius: vw(6),
-    backgroundColor: COLORS.BORDER_LIGHT,
+    backgroundColor: COLORS.BLACK,
     justifyContent: "center",
     alignItems: "center",
   },
   qtyText: {
-    fontSize: vw(18),
+    fontSize: vw(16),
     fontWeight: "600",
-    color: COLORS.GRAY_DARK,
+    color: COLORS.WHITE,
   },
   qtyNumber: {
-    fontSize: vw(16),
+    fontSize: vw(14),
     fontWeight: "600",
     color: COLORS.TEXT_SECONDARY,
   },

@@ -18,7 +18,7 @@ type Props = {
   rightBadgeCount?: number;
 };
 
-export default function Header({
+function Header({
   title = "",
   showBack = false,
   onBack,
@@ -58,6 +58,7 @@ export default function Header({
   );
 }
 
+export default React.memo(Header);
 
 const styles = StyleSheet.create({
   container: {

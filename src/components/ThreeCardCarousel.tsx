@@ -4,7 +4,7 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import { vw, vh } from '../utils/dimensions';
+import { vh } from '../utils/dimensions';
 import Title from './Title';
 import ThreeCardItem from './ThreeCardItem';
 import { Product } from '../data/products';
@@ -14,7 +14,7 @@ type Props = {
   data: Product[];
 };
 
-export default function ThreeCardCarousel({title, data }: Props) {
+function ThreeCardCarousel({title, data }: Props) {
   const renderItem = ({ item }: { item: Product }) => {
     return <ThreeCardItem item={{
       id: item.id,
@@ -38,6 +38,8 @@ export default function ThreeCardCarousel({title, data }: Props) {
     </View>
   );
 }
+
+export default React.memo(ThreeCardCarousel);
 
 const styles = StyleSheet.create({
   row: {

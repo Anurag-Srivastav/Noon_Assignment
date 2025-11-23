@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,10 +15,11 @@ import { useNavigation } from '@react-navigation/native';
 import SearchBar from '../components/SearchBar';
 import ThreeCardCarousel from '../components/ThreeCardCarousel';
 import StickyCartBar from '../components/StickyCartBar';
-import { SCREENS, COLORS } from '../constants';
+import { SCREENS, COLORS, LABELS } from '../constants';
 import { useShimmer } from '../hooks/useShimmer';
 import { vh, vw } from '../utils/dimensions';
 import { getAllProducts } from '../domain';
+import Header from '../components/Header';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -43,6 +44,14 @@ export default function HomeScreen() {
     loadProducts();
   }, []);
 
+  const handleSearchPress = useCallback(() => {
+    navigation.navigate(SCREENS.SEARCH as never);
+  }, [navigation]);
+
+  const handleCartPress = useCallback(() => {
+    navigation.navigate(SCREENS.CART as never);
+  }, [navigation]);
+
   if (loading) {
     return renderShimmer();
   }
@@ -50,16 +59,14 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safe}>
       {/* Custom Header */}
-      {/* <Header
-        title="Noon"
-        rightIcon="search-outline"
-        onRightPress={() => navigation.navigate('Search' as never)}
-      /> */}
+      <Header
+        title={LABELS.APP_NAME}
+      />
 
       <View style={styles.searchContainer}>
         <SearchBar
           editable={false}
-          onPress={() => navigation.navigate(SCREENS.SEARCH as never)}
+          onPress={handleSearchPress}
         />
       </View>
 
@@ -71,23 +78,23 @@ export default function HomeScreen() {
         <BannerCarousel banners={BANNERS} />
 
         <ProductCarousel
-          title="Featured"
+          title={LABELS.FEATURED}
           products={products}
-          onPressProduct={p =>
-            navigation.navigate(SCREENS.PRODUCT_DETAILS, {
-              productId: p.id,
-            } as never)
-          }
         />
 
         <ThreeCardCarousel
-          title="Things you might like"
+          title={LABELS.THINGS_YOU_MIGHT_LIKE}
           data={forYou}
+        />
+
+        <ProductCarousel
+          title={LABELS.FEATURED}
+          products={products}
         />
 
         
       </ScrollView>
-      <StickyCartBar itemCount={3} totalPrice={1500} onPressCart={() => navigation.navigate(SCREENS.CART as never)} />
+      <StickyCartBar onPressCart={handleCartPress} />
     </SafeAreaView>
   );
 }

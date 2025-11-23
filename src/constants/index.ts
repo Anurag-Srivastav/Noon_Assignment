@@ -102,6 +102,11 @@ export const LABELS = {
   CLEAR: 'Clear',
   SEARCHING: 'Searching...',
   NO_PRODUCTS_FOUND: 'No products found for',
+  FEATURED: 'Featured',
+  THINGS_YOU_MIGHT_LIKE: 'Things you might like',
+  
+  // App Name
+  APP_NAME: 'Noon',
   
   // Cart
   ITEMS: 'items',
