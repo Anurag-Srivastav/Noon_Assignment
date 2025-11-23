@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { View, Animated, StyleSheet } from 'react-native';
 import { COLORS } from '../constants';
 import { vh, vw } from '../utils/dimensions';
-import { SHIMMER_DIMENSIONS, WIDTH_PERCENTAGES, DEFAULTS, ANIMATION } from './shimmerConstants';
+import { SHIMMER_DIMENSIONS, WIDTH_PERCENTAGES, DEFAULTS, ANIMATION } from '../constants/shimmerConstants';
 
 interface ShimmerLoaderProps {
   width?: number | string;
