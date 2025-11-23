@@ -33,10 +33,9 @@ Pure business logic and data operations. Independent of any framework or UI conc
 Manages data sources including Redux store for global state, mock product data, and search cache. Ensures data persistence and provides type-safe data models.
 
 ## Use of Custom Hooks
-Custom hooks such as `useCart` and `useSearch` are used throughout the app to interact with Redux state. Components communicate with these hooks instead of directly accessing Redux, which keeps the data layer clean, encapsulates all business logic, and enables easy reuse. This approach ensures that logic for cart management and product searching is centralized, maintainable, and decoupled from UI components.
+Custom hooks such as `useSearch` and `useCartItem` are used throughout the app to interact with Redux state. Components communicate with these hooks instead of directly accessing Redux, which keeps the data layer clean, encapsulates all business logic, and enables easy reuse. This approach ensures that logic for product searching and related features is centralized, maintainable, and decoupled from UI components.
 
 ### Types of Custom Hooks Used
-- `useCart`: Manages cart state and actions (add, remove, update items)
 - `useSearch`: Handles product search logic and caching
 - `useDebounce`: Debounces user input for search
 - `useCartItem`: Manages individual cart item logic
