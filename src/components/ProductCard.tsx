@@ -49,25 +49,7 @@ function ProductCard({
         ))}
       </View>
 
-      <View style={styles.bottomSection}>
-        {/* {quantity === 0 ? (
-          <TouchableOpacity style={styles.addToCartBtn} onPress={addToCart}>
-            <Text style={styles.addToCartText}>{LABELS.ADD_TO_CART}</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.qtyContainer}>
-            <TouchableOpacity onPress={decrement} style={styles.qtyButton}>
-              <Text style={styles.qtyText}>{LABELS.DECREMENT}</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.qtyNumber}>{quantity}</Text>
-
-            <TouchableOpacity onPress={increment} style={styles.qtyButton}>
-              <Text style={styles.qtyText}>{LABELS.INCREMENT}</Text>
-            </TouchableOpacity>
-          </View>
-        )} */}
-        
+      <View style={styles.bottomSection}>        
         <QuantityControl
           product={product}
           addButtonText={LABELS.ADD_TO_CART}

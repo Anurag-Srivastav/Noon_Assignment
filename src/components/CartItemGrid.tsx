@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { CartItem } from '../store/cart/cartSlice';
 import { vw, vh } from '../utils/dimensions';
 import Image from './Image';
-import { useCartItem } from '../hooks/useCartItem';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import StarRating from './StarRating';
-import { SCREENS, COLORS, LABELS } from '../constants';
+import { SCREENS, COLORS } from '../constants';
+import QuantityControl from './QuantityControl';
 
 type Props = {
   item: CartItem;
@@ -17,23 +17,12 @@ type Props = {
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 function CartItemGrid({ item }: Props) {
-  const { product, quantity } = item;
-  const { increment, decrement } = useCartItem(product);
+  const { product } = item;
   const navigation = useNavigation<NavigationProp>();
 
   const handleCardPress = useCallback(() => {
     navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: product?.id });
   }, [navigation, product?.id]);
-
-  const handleDecrement = useCallback((e: any) => {
-    e.stopPropagation();
-    decrement();
-  }, [decrement]);
-
-  const handleIncrement = useCallback((e: any) => {
-    e.stopPropagation();
-    increment();
-  }, [increment]);
 
   return (
     <TouchableOpacity 
@@ -54,21 +43,13 @@ function CartItemGrid({ item }: Props) {
 
         <StarRating rating={product?.rating} size={vw(7)} />
 
-        <View style={styles.qtyContainer}>
-          <TouchableOpacity 
-            style={styles.qtyBtn} 
-            onPress={handleDecrement}
-          >
-            <Text style={styles.qtyText}>{LABELS.DECREMENT}</Text>
-          </TouchableOpacity>
-          <Text style={styles.qtyNumber}>{quantity}</Text>
-          <TouchableOpacity 
-            style={styles.qtyBtn} 
-            onPress={handleIncrement}
-          >
-            <Text style={styles.qtyText}>{LABELS.INCREMENT}</Text>
-          </TouchableOpacity>
-        </View>
+        <QuantityControl
+          product={product}
+          containerStyle={styles.qtyContainer}
+          buttonStyle={styles.qtyBtn}
+          textStyle={styles.qtyText}
+          quantityTextStyle={styles.qtyNumber}
+        />
       </View>
     </TouchableOpacity>
   );

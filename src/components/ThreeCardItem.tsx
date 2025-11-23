@@ -51,7 +51,6 @@ function ThreeCardItem({ item }: Props) {
           style={styles.image}
         />
         
-        {/* Add/Qty button positioned half on image */}
         <View style={styles.addButtonContainer}>
           <QuantityControl
             product={product}
