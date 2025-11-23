@@ -35,17 +35,23 @@ Manages data sources including Redux store for global state, mock product data, 
 ## Use of Custom Hooks
 Custom hooks such as `useCart` and `useSearch` are used throughout the app to interact with Redux state. Components communicate with these hooks instead of directly accessing Redux, which keeps the data layer clean, encapsulates all business logic, and enables easy reuse. This approach ensures that logic for cart management and product searching is centralized, maintainable, and decoupled from UI components.
 
+### Types of Custom Hooks Used
+- `useCart`: Manages cart state and actions (add, remove, update items)
+- `useSearch`: Handles product search logic and caching
+- `useDebounce`: Debounces user input for search
+- `useCartItem`: Manages individual cart item logic
+- `useShimmer`: Controls shimmer loading effects for UI
+
 ## LFU Cache Implementation in Async for Search Optimization
 An LFU (Least Frequently Used) cache has been implemented to optimize search result caching through the API. This ensures that frequently searched queries are quickly retrieved, improving performance and reducing redundant data processing. The LFU cache logic is fully integrated with Redux and the search flow for efficient state management.
+
+## Real API Simulation
+All features in this app are a real simulation of APIs. The data flow, search, cart management, and product operations mimic real-world asynchronous API interactions, providing a realistic development and testing environment.
 
 
 ## Working Demo Video
 To view the working video of the application, visit:
 [https://drive.google.com/file/d/1CGGciUKvFiB_jOZvxaeWLZ7e1Hcg8Nki/view?usp=sharing](https://drive.google.com/file/d/1CGGciUKvFiB_jOZvxaeWLZ7e1Hcg8Nki/view?usp=sharing)
-
-## Real API Simulation
-All features in this app are a real simulation of APIs. The data flow, search, cart management, and product operations mimic real-world asynchronous API interactions, providing a realistic development and testing environment.
-
 
 ---
 
