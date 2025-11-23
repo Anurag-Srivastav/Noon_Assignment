@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { useCartItem } from '../hooks/useCartItem';
 import { vw, vh } from '../utils/dimensions';
 import Image from './Image';
+import QuantityControl from './QuantityControl';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 import { Product } from '../data/products';
@@ -39,8 +39,6 @@ function ThreeCardItem({ item }: Props) {
     description: '',
   };
 
-  const { quantity, addToCart, increment, decrement } = useCartItem(product);
-
   const handleCardPress = () => {
     navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: item.id });
   };
@@ -55,21 +53,16 @@ function ThreeCardItem({ item }: Props) {
         
         {/* Add/Qty button positioned half on image */}
         <View style={styles.addButtonContainer}>
-          {quantity === 0 ? (
-            <TouchableOpacity style={styles.addBtn} onPress={addToCart}>
-              <Text style={styles.addBtnText}>Add</Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.qtyContainer}>
-              <TouchableOpacity style={styles.qtyBtn} onPress={decrement}>
-                <Text style={styles.qtyText}>-</Text>
-              </TouchableOpacity>
-              <Text style={styles.qtyNumber}>{quantity}</Text>
-              <TouchableOpacity style={styles.qtyBtn} onPress={increment}>
-                <Text style={styles.qtyText}>+</Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          <QuantityControl
+            product={product}
+            addButtonText="Add"
+            addButtonStyle={styles.addBtn}
+            addButtonTextStyle={styles.addBtnText}
+            containerStyle={styles.qtyContainer}
+            buttonStyle={styles.qtyBtn}
+            textStyle={styles.qtyText}
+            quantityTextStyle={styles.qtyNumber}
+          />
         </View>
       </View>
 

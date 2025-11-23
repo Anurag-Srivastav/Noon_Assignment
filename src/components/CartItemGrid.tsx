@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { CartItem } from '../store/cart/cartSlice';
 import { vw, vh } from '../utils/dimensions';
@@ -21,10 +21,24 @@ function CartItemGrid({ item }: Props) {
   const { increment, decrement } = useCartItem(product);
   const navigation = useNavigation<NavigationProp>();
 
+  const handleCardPress = useCallback(() => {
+    navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: product?.id });
+  }, [navigation, product?.id]);
+
+  const handleDecrement = useCallback((e: any) => {
+    e.stopPropagation();
+    decrement();
+  }, [decrement]);
+
+  const handleIncrement = useCallback((e: any) => {
+    e.stopPropagation();
+    increment();
+  }, [increment]);
+
   return (
     <TouchableOpacity 
       style={styles.card} 
-      onPress={() => navigation.navigate(SCREENS.PRODUCT_DETAILS, { productId: product?.id })}
+      onPress={handleCardPress}
       activeOpacity={0.7}
     >
       <View style={styles.imageContainer}>
@@ -43,20 +57,14 @@ function CartItemGrid({ item }: Props) {
         <View style={styles.qtyContainer}>
           <TouchableOpacity 
             style={styles.qtyBtn} 
-            onPress={(e) => {
-              e.stopPropagation();
-              decrement();
-            }}
+            onPress={handleDecrement}
           >
             <Text style={styles.qtyText}>{LABELS.DECREMENT}</Text>
           </TouchableOpacity>
           <Text style={styles.qtyNumber}>{quantity}</Text>
           <TouchableOpacity 
             style={styles.qtyBtn} 
-            onPress={(e) => {
-              e.stopPropagation();
-              increment();
-            }}
+            onPress={handleIncrement}
           >
             <Text style={styles.qtyText}>{LABELS.INCREMENT}</Text>
           </TouchableOpacity>

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   Dimensions,
   StyleSheet,
 } from "react-native";
@@ -16,12 +15,12 @@ import CustomHeader from "../components/CustomHeader";
 import BannerCarousel from "../components/BannerCarousel";
 import CustomButton from "../components/CustomButton";
 import Tag from "../components/Tag";
-import { useCartItem } from "../hooks/useCartItem";
 import StarRating from "../components/StarRating";
 import { vh, vw } from "../utils/dimensions";
 import { COLORS, LABELS, SCREENS } from "../constants";
 import { useShimmer } from "../hooks/useShimmer";
 import { getProductById } from "../domain";
+import QuantityControl from "../components/QuantityControl";
 
 const { width } = Dimensions.get('window');
 const CAROUSEL_SIZE = width - 24; // Square dimensions
@@ -50,8 +49,6 @@ export default function ProductDetailsScreen() {
 
     loadProductDetails();
   }, [route.params.productId]);
-
-  const { quantity, addToCart, increment, decrement } = useCartItem(product!);
 
   if (loading || !product) {
     return renderShimmer();
@@ -113,44 +110,23 @@ export default function ProductDetailsScreen() {
 
       {/* Sticky Add to Cart Button */}
       <View style={styles.stickyFooter}>
-        {quantity === 0 ? (
-          <CustomButton
-            title={LABELS.ADD_TO_CART}
-            onPress={addToCart}
-            icon="cart-outline"
+        <View style={styles.twoButtonContainer}>
+          <QuantityControl
+            product={product}
+            addButtonText={LABELS.ADD_TO_CART}
+            containerStyle={styles.quantityContainer}
+            buttonStyle={styles.quantityButton}
+            textStyle={styles.quantityButtonText}
+            quantityTextStyle={styles.quantityText}
           />
-        ) : (
-          <View style={styles.twoButtonContainer}>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity
-                onPress={decrement}
-                style={styles.quantityButton}
-              >
-                <Text style={styles.quantityButtonText}>
-                  -
-                </Text>
-              </TouchableOpacity>
-              <Text style={styles.quantityText}>
-                {quantity}
-              </Text>
-              <TouchableOpacity
-                onPress={increment}
-                style={styles.quantityButton}
-              >
-                <Text style={styles.quantityButtonText}>
-                  +
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.viewCartButtonWrapper}>
-              <CustomButton
-                title="View Cart"
-                onPress={() => navigation.navigate(SCREENS.CART)}
-                icon="cart-outline"
-              />
-            </View>
+          <View style={styles.viewCartButtonWrapper}>
+            <CustomButton
+              title={LABELS.VIEW_CART}
+              onPress={() => navigation.navigate(SCREENS.CART)}
+              icon="cart-outline"
+            />
           </View>
-        )}
+        </View>
       </View>
     </SafeAreaView>
   );

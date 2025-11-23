@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Product } from "../data/products";
 import Image from "./Image";
 import { vh, vw } from "../utils/dimensions";
-import { useCartItem } from "../hooks/useCartItem";
 import Tag from "./Tag";
 import StarRating from "./StarRating";
 import { COLORS, LABELS, SCREENS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
+import QuantityControl from "./QuantityControl";
 
 type Props = {
   product: Product;
@@ -19,7 +19,6 @@ function ProductCard({
   cardColor = COLORS.WHITE,
 }: Props) {
   const navigation = useNavigation();
-  const { quantity, addToCart, increment, decrement } = useCartItem(product);
 
   const handleCardPress = () => {
     navigation.navigate(SCREENS.PRODUCT_DETAILS, {
@@ -51,7 +50,7 @@ function ProductCard({
       </View>
 
       <View style={styles.bottomSection}>
-        {quantity === 0 ? (
+        {/* {quantity === 0 ? (
           <TouchableOpacity style={styles.addToCartBtn} onPress={addToCart}>
             <Text style={styles.addToCartText}>{LABELS.ADD_TO_CART}</Text>
           </TouchableOpacity>
@@ -67,7 +66,18 @@ function ProductCard({
               <Text style={styles.qtyText}>{LABELS.INCREMENT}</Text>
             </TouchableOpacity>
           </View>
-        )}
+        )} */}
+        
+        <QuantityControl
+          product={product}
+          addButtonText={LABELS.ADD_TO_CART}
+          addButtonStyle={styles.addToCartBtn}
+          addButtonTextStyle={styles.addToCartText}
+          containerStyle={styles.qtyContainer}
+          buttonStyle={styles.qtyButton}
+          textStyle={styles.qtyText}
+          quantityTextStyle={styles.qtyNumber}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -141,7 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderRadius: vw(8),
     borderWidth: 1,
-    borderColor: COLORS.GRAY_LIGHT,
+    borderColor: COLORS.BLACK,
     paddingHorizontal: vw(4),
     height: vh(30),  
     width: vw(140),
