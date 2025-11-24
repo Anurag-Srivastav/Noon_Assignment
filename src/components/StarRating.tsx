@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { vw, vh } from '../utils/dimensions';
-import { COLORS } from '../constants';
+import { vw } from '../utils/dimensions';
+import { COLORS, ICONS } from '../constants';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 type Props = {
   rating: number;
@@ -30,7 +31,7 @@ function StarRating({
             starStyle,
           ]}
         >
-          ⭐
+          <Icon name={ICONS.STAR_ICON} size={12} color={COLORS.BLACK} />
         </Text>
       ))}
       {showRatingText && (
