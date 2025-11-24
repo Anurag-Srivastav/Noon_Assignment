@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet } from "react-native";
 import ProductCard from "./ProductCard";
 import Title from "./Title";
 import { Product } from "../data/products";
@@ -14,22 +14,19 @@ function ProductCarousel({
   title,
   products,
 }: Props) {
+  const renderProductCard = ({ item }: { item: Product }) => <ProductCard product={item} />;
+
   return (
     <View style={styles.container}>
       {title && <Title>{title}</Title>}
-
-      <ScrollView
+      <FlatList
+        data={products}
+        keyExtractor={(product: Product) => product.id}
+        renderItem={renderProductCard}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
-      >
-        {products?.map((product) => (
-          <ProductCard
-            key={product?.id}
-            product={product}
-          />
-        ))}
-      </ScrollView>
+      />
     </View>
   );
 }
