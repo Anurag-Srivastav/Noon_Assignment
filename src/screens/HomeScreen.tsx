@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Platform,
   StatusBar,
   View,
+  FlatList,
 } from 'react-native';
 import BannerCarousel from '../components/BannerCarousel';
 import ProductCarousel from '../components/ProductCarousel';
@@ -58,43 +58,29 @@ export default function HomeScreen() {
     return renderShimmer();
   }
 
+  const renderListHeader = () => (
+    <>
+      <Header title={LABELS.APP_NAME} />
+      <View style={styles.searchContainer}>
+        <SearchBar editable={false} onPress={handleSearchPress} />
+      </View>
+      <BannerCarousel banners={BANNERS} />
+      <ProductCarousel title={LABELS.FEATURED} products={products} />
+      <ThreeCardCarousel title={LABELS.THINGS_YOU_MIGHT_LIKE} data={forYou} />
+      <ProductCarousel title={LABELS.NEW_ARRIVALS} products={newArrivals} />
+    </>
+  );
+
   return (
     <SafeAreaView style={styles.safe}>
-      {/* Custom Header */}
-      <Header
-        title={LABELS.APP_NAME}
-      />
-
-      <View style={styles.searchContainer}>
-        <SearchBar
-          editable={false}
-          onPress={handleSearchPress}
-        />
-      </View>
-
-      <ScrollView
+      <FlatList
+        data={[]}
+        renderItem={null}
+        keyExtractor={() => ''}
+        ListHeaderComponent={renderListHeader}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
-      >
-        
-        <BannerCarousel banners={BANNERS} />
-
-        <ProductCarousel
-          title={LABELS.FEATURED}
-          products={products}
-        />
-
-         <ThreeCardCarousel
-          title={LABELS.THINGS_YOU_MIGHT_LIKE}
-          data={forYou}
-        />
-
-         <ProductCarousel
-          title={LABELS.NEW_ARRIVALS}
-          products={newArrivals}
-        />
-
-      </ScrollView>
+      />
       <StickyCartBar onPressCart={handleCartPress} />
     </SafeAreaView>
   );

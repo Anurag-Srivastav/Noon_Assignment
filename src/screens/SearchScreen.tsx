@@ -3,9 +3,9 @@ import {
   SafeAreaView,
   View,
   Text,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import { PRODUCTS } from '../data/products';
 import SearchResultCard from '../components/SearchResultCard';
@@ -13,7 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import SearchBar from '../components/SearchBar';
 import ThreeCardCarousel from '../components/ThreeCardCarousel';
 import Tag from '../components/Tag';
-import { SCREENS, COLORS, LABELS } from '../constants';
+import { SCREENS, COLORS, LABELS, ICONS } from '../constants';
 import { useShimmer } from '../hooks/useShimmer';
 import { useDebounce } from '../hooks/useDebounce';
 import { useSearch } from '../hooks/useSearch';
@@ -90,79 +90,76 @@ export default function SearchScreen() {
     return renderShimmer();
   }
 
+  const renderRecentSearchTag = ({ item }: { item: string }) => (
+    <Tag key={item} text={item} onPress={() => handleTagPress(item)} />
+  );
+
+  const renderSearchResult = ({ item }: { item: Product }) => (
+    <SearchResultCard key={item.id} product={item} onPress={() => handleProductPress(item.id)} />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-
-      <SearchBar
-        editable={true}
-        iconName={'chevron-back-outline'}
-        value={query}
-        onChangeText={setQuery}
-        onPressIcon={handleBackPress}
-      />
-
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-      >
-        {recentSearches?.length > 0 && query.length === 0 && (
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
+      {loading ? (
+        renderShimmer()
+      ) : (
+        <>
+          <SearchBar
+            editable={true}
+            iconName={ICONS.CHEVRON_BACK}
+            value={query}
+            onChangeText={setQuery}
+            onPressIcon={handleBackPress}
+            style={styles.searchBarNoMargin}
+          />
+          {recentSearches?.length > 0 && query.length === 0 && (
+            <View style={styles.section}>
+              <View style={styles.sectionHeader}>
+                <Text style={styles.sectionTitle}>{LABELS.RECENT_SEARCHES}</Text>
+                <TouchableOpacity onPress={clearRecentSearches}>
+                  <Text style={styles.clearButton}>{LABELS.CLEAR}</Text>
+                </TouchableOpacity>
+              </View>
+              <FlatList
+                data={recentSearches}
+                renderItem={renderRecentSearchTag}
+                keyExtractor={item => item}
+                horizontal={false}
+                numColumns={2}
+                contentContainerStyle={styles.tagContainer}
+                scrollEnabled={false}
+              />
+            </View>
+          )}
+          {query.length > 0 && (
+            <View style={styles.resultsSection}>
               <Text style={styles.sectionTitle}>
-                {LABELS.RECENT_SEARCHES}
+                {LABELS.SEARCH_RESULTS} ({searching ? '...' : results.length})
               </Text>
-              <TouchableOpacity onPress={clearRecentSearches}>
-                <Text style={styles.clearButton}>{LABELS.CLEAR}</Text>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.tagContainer}>
-              {recentSearches.map((item, idx) => (
-                <Tag
-                  key={idx}
-                  text={item}
-                  onPress={() => handleTagPress(item)}
+              {searching ? (
+                <View style={styles.loadingContainer}>
+                  <Text style={styles.loadingText}>{LABELS.SEARCHING}</Text>
+                </View>
+              ) : results.length > 0 ? (
+                <FlatList
+                  data={results}
+                  renderItem={renderSearchResult}
+                  keyExtractor={item => item.id}
+                  contentContainerStyle={styles.resultsContainer}
+                  scrollEnabled={false}
                 />
-              ))}
+              ) : (
+                <Text style={styles.noResults}>{LABELS.NO_PRODUCTS_FOUND} "{query}"</Text>
+              )}
             </View>
-          </View>
-        )}
-
-        {query.length > 0 && (
-          <View style={styles.resultsSection}>
-            <Text style={styles.sectionTitle}>
-              {LABELS.SEARCH_RESULTS} ({searching ? '...' : results.length})
-            </Text>
-
-            {searching ? (
-              <View style={styles.loadingContainer}>
-                <Text style={styles.loadingText}>{LABELS.SEARCHING}</Text>
-              </View>
-            ) : results.length > 0 ? (
-              <View style={styles.resultsContainer}>
-                {results?.map(item => (
-                  <SearchResultCard
-                    key={item.id}
-                    product={item}
-                    onPress={() => handleProductPress(item.id)}
-                  />
-                ))}
-              </View>
-            ) : (
-              <Text
-                style={styles.noResults}
-              >
-                {LABELS.NO_PRODUCTS_FOUND} "{query}"
-              </Text>
-            )}
-          </View>
-        )}
-
-        {query.length === 0 && (
-          <View style={styles.forYouSection}>
-            <ThreeCardCarousel title={LABELS.FOR_YOU} data={PRODUCTS.forYou} />
-          </View>
-        )}
-      </ScrollView>
+          )}
+          {query.length === 0 && (
+            <View style={styles.forYouSection}>
+              <ThreeCardCarousel title={LABELS.FOR_YOU} data={PRODUCTS.forYou} />
+            </View>
+          )}
+        </>
+      )}
     </SafeAreaView>
   );
 }
@@ -170,6 +167,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: vw(12),
   },
   scrollContent: {
     paddingHorizontal: vw(12),
@@ -225,5 +223,8 @@ const styles = StyleSheet.create({
   },
   forYouSection: {
     marginTop: vh(20),
+  },
+  searchBarNoMargin: {
+    marginHorizontal: 0,
   },
 });

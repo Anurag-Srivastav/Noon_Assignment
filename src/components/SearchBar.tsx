@@ -18,6 +18,7 @@ type Props = {
   onPressIcon?: () => void;
   placeholder?: string;
   editable?: boolean;
+  style?: object;
 };
 
 const SearchBar = ({
@@ -28,6 +29,7 @@ const SearchBar = ({
   iconName,
   placeholder = 'Search...',
   editable = true,
+  style = {},
 }: Props) => {
   const showClear = Boolean(value);
 
@@ -39,7 +41,7 @@ const SearchBar = ({
   const wrapperProps = editable ? {} : { onPress };
 
   return (
-    <Wrapper style={styles.container} {...wrapperProps}>
+    <Wrapper style={[styles.container, style]} {...wrapperProps}>
       <Pressable onPress={onPressIcon}>
         <Icon
           name={iconName || 'search-outline'}
