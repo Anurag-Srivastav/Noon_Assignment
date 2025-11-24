@@ -9,7 +9,7 @@ import {
 } from '../components/ShimmerLoader';
 import SearchBar from '../components/SearchBar';
 import CustomHeader from '../components/CustomHeader';
-import { LABELS, COLORS, SCREENS } from '../constants';
+import { LABELS, COLORS, SCREENS, ICONS } from '../constants';
 import { vh, vw } from '../utils/dimensions';
 
 const { width } = Dimensions.get('window');
@@ -18,11 +18,11 @@ const CAROUSEL_SIZE = width - 24;
 type ShimmerScreen = typeof SCREENS.HOME | typeof SCREENS.SEARCH | typeof SCREENS.CART | typeof SCREENS.PRODUCT_DETAILS | typeof SCREENS.CART_REVIEW;
 
 interface UseShimmerReturn {
-  renderShimmer: () => React.ReactElement;
+  renderShimmer: (showSearchBar?: boolean) => React.ReactElement;
 }
 
 export const useShimmer = (screen: ShimmerScreen): UseShimmerReturn => {
-  const renderShimmer = (): React.ReactElement => {
+  const renderShimmer = (showSearchBar: boolean = true): React.ReactElement => {
     switch (screen) {
       case SCREENS.HOME:
         return (
@@ -54,14 +54,14 @@ export const useShimmer = (screen: ShimmerScreen): UseShimmerReturn => {
       case SCREENS.SEARCH:
         return (
           <SafeAreaView style={styles.searchSafe}>
-            <SearchBar
+            {showSearchBar && <SearchBar
               editable={false}
-              iconName={'chevron-back-outline'}
+              iconName={ICONS.CHEVRON_BACK}
               value=""
               onChangeText={() => {}}
               onPressIcon={() => {}}
               style={styles.searchBarNoMargin}
-            />
+            />}
             <View style={styles.searchGrid}>
               {Array.from({ length: 6 }).map((_, index) => (
                 <ProductCardShimmer key={`search-shimmer-${index}`} />

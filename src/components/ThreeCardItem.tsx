@@ -1,16 +1,14 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { vw, vh } from '../utils/dimensions';
 import Image from './Image';
 import QuantityControl from './QuantityControl';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 import { Product } from '../data/products';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import StarRating from './StarRating';
-import { SCREENS } from '../constants';
+import { LABELS, SCREENS } from '../constants';
 
 type Item = {
   id: string;
@@ -54,7 +52,7 @@ function ThreeCardItem({ item }: Props) {
         <View style={styles.addButtonContainer}>
           <QuantityControl
             product={product}
-            addButtonText="Add"
+            addButtonText={LABELS.ADD}
             addButtonStyle={styles.addBtn}
             addButtonTextStyle={styles.addBtnText}
             containerStyle={styles.qtyContainer}

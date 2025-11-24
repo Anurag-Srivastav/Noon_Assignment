@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 import { vw, vh } from '../utils/dimensions';
 import { COLORS } from '../constants';
 
@@ -10,27 +17,16 @@ interface TagProps {
   textStyle?: TextStyle;
 }
 
-const Tag: React.FC<TagProps> = ({
-  text,
-  onPress,
-  style,
-  textStyle,
-}) => {
+const Tag: React.FC<TagProps> = ({ text, onPress, style, textStyle }) => {
   const containerStyle = [styles.container, style];
   const textStyleCombined = [styles.text, textStyle];
 
-  if (onPress) {
-    return (
-      <TouchableOpacity style={containerStyle} onPress={onPress}>
-        <Text style={textStyleCombined}>{text}</Text>
-      </TouchableOpacity>
-    );
-  }
+  const Wrapper = onPress ? TouchableOpacity : View;
 
   return (
-    <View style={containerStyle}>
+    <Wrapper style={containerStyle} onPress={onPress}>
       <Text style={textStyleCombined}>{text}</Text>
-    </View>
+    </Wrapper>
   );
 };
 

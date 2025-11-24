@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: vh(70),
+    height: vh(50),
     paddingHorizontal: vw(8),
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight || vh(25) : 0,
   },

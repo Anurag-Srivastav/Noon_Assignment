@@ -1,27 +1,29 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomButton from "./CustomButton";
-import { COLORS, LABELS } from "../constants";
+import { COLORS, ICONS, LABELS, SCREENS } from "../constants";
 import { vh, vw } from "../utils/dimensions";
+import { useCartItem } from "../hooks/useCartItem";
+import { useNavigation } from "@react-navigation/native";
 
-const StickyCartBar = ({ onPressCart }: { onPressCart: () => void }) => {
+const StickyCartBar = () => {
   const insets = useSafeAreaInsets();
-  
-  const totalAmount = useSelector((state: RootState) => state.cart.total);
-  const totalItems = useSelector((state: RootState) =>
-    state.cart.items.reduce((sum, item) => sum + item.quantity, 0)
-  );
+  const navigation= useNavigation();
+
+  const { totalAmount, totalItems } = useCartItem();
+
+  const handleCartPress = useCallback(() => {
+    navigation.navigate(SCREENS.CART as never);
+  }, [navigation]);
 
   if (totalItems === 0) return null;
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom || 12 }]}>
       <View style={styles.leftSection}>
-        <Icon name="cart-outline" size={20} color={COLORS.GRAY_DARK} />
+        <Icon name={ICONS.CART_OUTLINE} size={20} color={COLORS.GRAY_DARK} />
         <View>
           <Text style={styles.items}>{totalItems} {LABELS.ITEMS}</Text>
           <Text style={styles.price}>₹ {totalAmount}</Text>
@@ -29,8 +31,8 @@ const StickyCartBar = ({ onPressCart }: { onPressCart: () => void }) => {
       </View>
 
       <View style={styles.buttonWrapper}>
-        <CustomButton title={`${LABELS.VIEW_CART}   `} onPress={onPressCart} />
-        <Icon name="cart-outline" size={18} color={COLORS.WHITE} style={styles.icon} />
+        <CustomButton title={`${LABELS.VIEW_CART}   `} onPress={handleCartPress} />
+        <Icon name={ICONS.CART_OUTLINE} size={18} color={COLORS.WHITE} style={styles.icon} />
       </View>
     </View>
   );

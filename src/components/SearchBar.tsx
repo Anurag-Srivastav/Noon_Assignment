@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { vh, vw } from '../utils/dimensions';
-import { COLORS } from '../constants';
+import { COLORS, ICONS } from '../constants';
 
 type Props = {
   value?: string;
@@ -44,7 +44,7 @@ const SearchBar = ({
     <Wrapper style={[styles.container, style]} {...wrapperProps}>
       <Pressable onPress={onPressIcon}>
         <Icon
-          name={iconName || 'search-outline'}
+          name={iconName || ICONS.SEARCH}
           size={vw(20)}
           color={COLORS.GRAY_MEDIUM}
           style={styles.leftIcon}
@@ -63,7 +63,7 @@ const SearchBar = ({
 
       {showClear && editable && (
         <TouchableOpacity onPress={handleClear} style={styles.clearBtn}>
-          <Icon name="close-circle" size={vw(18)} color={COLORS.TEXT_LIGHTER} />
+          <Icon name={ICONS.CROSS} size={vw(18)} color={COLORS.TEXT_LIGHTER} />
         </TouchableOpacity>
       )}
     </Wrapper>

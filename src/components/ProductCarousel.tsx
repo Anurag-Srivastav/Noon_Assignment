@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard";
 import Title from "./Title";
 import { Product } from "../data/products";
 import { vh, vw } from "../utils/dimensions";
+import { COLORS } from "../constants";
 
 type Props = {
   title?: string;
@@ -34,7 +35,7 @@ function ProductCarousel({
 const styles = StyleSheet.create({
   container: {
     marginVertical: vh(16),
-    backgroundColor : 'transparent'
+    backgroundColor: COLORS.WHITE,
   },
   scrollContent: {
     paddingHorizontal: vw(4),

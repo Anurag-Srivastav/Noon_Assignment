@@ -145,10 +145,10 @@ export const ICONS = {
   CART: 'cart',
   FLASH: 'flash-sharp',
   STAR_ICON: 'star',
+  SEARCH: 'search-outline',
+  CROSS: "close-circle",
   
   // Emoji/Unicode
-  STAR: '⭐',
-  ROCKET: '🚀',
   WARNING: '⚠️',
   CHECKMARK: '✓',
   

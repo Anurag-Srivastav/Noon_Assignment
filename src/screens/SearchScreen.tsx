@@ -132,9 +132,7 @@ export default function SearchScreen() {
                 {LABELS.SEARCH_RESULTS} ({searching ? '...' : results.length})
               </Text>
               {searching ? (
-                <View style={styles.loadingContainer}>
-                  <Text style={styles.loadingText}>{LABELS.SEARCHING}</Text>
-                </View>
+                renderShimmer(false)
               ) : results.length > 0 ? (
                 <FlatList
                   data={results}

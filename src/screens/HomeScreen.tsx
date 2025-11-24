@@ -19,7 +19,7 @@ import { SCREENS, COLORS, LABELS } from '../constants';
 import { useShimmer } from '../hooks/useShimmer';
 import { vh, vw } from '../utils/dimensions';
 import { getAllProducts } from '../domain';
-import Header from '../components/Header';
+import CustomHeader from '../components/CustomHeader';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -60,7 +60,7 @@ export default function HomeScreen() {
 
   const renderListHeader = () => (
     <>
-      <Header title={LABELS.APP_NAME} />
+      <CustomHeader title={LABELS.APP_NAME} showBackButton={false} titleAlignment='center'/>
       <View style={styles.searchContainer}>
         <SearchBar editable={false} onPress={handleSearchPress} />
       </View>
@@ -81,7 +81,7 @@ export default function HomeScreen() {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       />
-      <StickyCartBar onPressCart={handleCartPress} />
+      <StickyCartBar />
     </SafeAreaView>
   );
 }
