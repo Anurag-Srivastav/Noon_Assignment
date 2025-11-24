@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
@@ -21,11 +22,22 @@ import { useShimmer } from "../hooks/useShimmer";
 import { vh, vw } from "../utils/dimensions";
 import { getCartData } from "../domain";
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+// DeliveryHeader component to remove inline styles
+const DeliveryHeader = React.memo(function DeliveryHeader({ deliveryMinutes }: { deliveryMinutes: number }) {
+  return (
+    <View style={styles.deliveryHeader}>
+      <Icon name={ICONS.FLASH} size={18} color={COLORS.BLACK} />
+      <Text style={styles.deliveryText}>
+        {LABELS.DELIVERY_IN} {deliveryMinutes} {LABELS.MINUTES}
+      </Text>
+    </View>
+  );
+});
+
 
 export default function CartScreen() {
   const items = useSelector((state: RootState) => state.cart.items);
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [loading, setLoading] = useState(true);
   const { renderShimmer } = useShimmer(SCREENS.CART);
 
@@ -39,7 +51,6 @@ export default function CartScreen() {
         setLoading(false);
       }
     };
-
     loadCart();
   }, []);
 
@@ -51,6 +62,14 @@ export default function CartScreen() {
   const renderItem = ({ item }: { item: typeof items[number] }) => (
     <CartItemGrid item={item} />
   );
+
+  const handleContinueShopping = () => {
+    navigation.navigate(SCREENS.HOME);
+  };
+
+  const handlePayAndPlaceOrder = () => {
+    navigation.navigate(SCREENS.CART_REVIEW);
+  };
 
   if (loading) {
     return renderShimmer();
@@ -69,7 +88,7 @@ export default function CartScreen() {
           <View style={styles.emptyFooter}>
             <CustomButton
               title={LABELS.CONTINUE_SHOPPING}
-              onPress={() => navigation.navigate(SCREENS.HOME)}
+              onPress={handleContinueShopping}
             />
           </View>
         </View>
@@ -81,14 +100,7 @@ export default function CartScreen() {
             renderItem={renderItem}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}
-            ListHeaderComponent={
-              <View style={styles.deliveryHeader}>
-                <Icon name={ICONS.FLASH} size={18} color={COLORS.BLACK} />
-                <Text style={styles.deliveryText}>
-                  {LABELS.DELIVERY_IN} {deliveryMinutes} {LABELS.MINUTES}
-                </Text>
-              </View>
-            }
+            ListHeaderComponent={<DeliveryHeader deliveryMinutes={deliveryMinutes} />}
             ListFooterComponent={<View style={styles.footerSpacer} />}
           />
 
@@ -97,7 +109,7 @@ export default function CartScreen() {
             <View style={styles.checkoutBtn}>
               <CustomButton
                 title={LABELS.PAY_AND_PLACE_ORDER}
-                onPress={() => navigation.navigate(SCREENS.CART_REVIEW)}
+                onPress={handlePayAndPlaceOrder}
               />
             </View>
           </View>
