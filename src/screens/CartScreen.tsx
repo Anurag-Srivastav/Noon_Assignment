@@ -43,8 +43,10 @@ export default function CartScreen() {
     loadCart();
   }, []);
 
-  // Generate random delivery time between 8-15 minutes
-  const deliveryMinutes = Math.floor(Math.random() * (DELIVERY.MAX_MINUTES - DELIVERY.MIN_MINUTES + 1)) + DELIVERY.MIN_MINUTES;
+  // Memoize random delivery time between 8-15 minutes for each render
+  const deliveryMinutes = React.useMemo(() => {
+    return Math.floor(Math.random() * (DELIVERY.MAX_MINUTES - DELIVERY.MIN_MINUTES + 1)) + DELIVERY.MIN_MINUTES;
+  }, []);
 
   const renderItem = ({ item }: { item: typeof items[number] }) => (
     <CartItemGrid item={item} />
