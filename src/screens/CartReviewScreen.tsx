@@ -1,9 +1,32 @@
+  // Header component for FlatList
+  const Header = ({ selectedCard, paymentMethods, renderPaymentMethod }: {
+    selectedCard: string | null,
+    paymentMethods: PaymentMethod[],
+    renderPaymentMethod: ({ item }: { item: PaymentMethod }) => React.ReactElement
+  }) => (
+    <View style={styles.listHeaderWrapper}>
+      <Text style={styles.sectionTitle}>{LABELS.PAYMENT_METHOD}</Text>
+      {!selectedCard && (
+        <View style={styles.warningBox}>
+          <Text style={styles.warningText}>{LABELS.SELECT_PAYMENT_CARD}</Text>
+        </View>
+      )}
+      <FlatList
+        data={paymentMethods}
+        keyExtractor={item => item.id.toString()}
+        renderItem={renderPaymentMethod}
+        scrollEnabled={false}
+      />
+      <View style={styles.itemsSection}>
+        <Text style={styles.sectionTitle}>{LABELS.ORDER_ITEMS}</Text>
+      </View>
+    </View>
+  );
 import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
   Text,
-  ScrollView,
   TouchableOpacity,
   StyleSheet,
   FlatList,
@@ -106,45 +129,23 @@ export default function CartReviewScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title={LABELS.REVIEW_ORDER} />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        {/* Payment Method */}
-        <Text style={styles.sectionTitle}>
-          {LABELS.PAYMENT_METHOD}
-        </Text>
-
-        {!selectedCard && (
-          <View style={styles.warningBox}>
-            <Text style={styles.warningText}>
-              {LABELS.SELECT_PAYMENT_CARD}
-            </Text>
-          </View>
-        )}
-
-        <FlatList
-          data={paymentMethods}
-          keyExtractor={item => item.id.toString()}
-          renderItem={renderPaymentMethod}
-          scrollEnabled={false}
-        />
-
-        {/* Items Review */}
-        <View style={styles.itemsSection}>
-          <Text style={styles.sectionTitle}>
-            {LABELS.ORDER_ITEMS}
-          </Text>
-          <FlatList
-            data={cartItems}
-            keyExtractor={item => item.product.id.toString()}
-            renderItem={renderCartItem}
-            scrollEnabled={false}
+      <FlatList
+        data={cartItems}
+        keyExtractor={item => item.product.id.toString()}
+        renderItem={renderCartItem}
+        showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <Header
+            selectedCard={selectedCard}
+            paymentMethods={paymentMethods}
+            renderPaymentMethod={renderPaymentMethod}
           />
-        </View>
-
-        {/* Pricing Summary */}
+        }
+        contentContainerStyle={styles.scrollContent}
+      />
+      <View style={styles.orderSummaryWrapper}>
         <OrderSummary />
-      </ScrollView>
-
-      {/* Place Order Button - Sticky */}
+      </View>
       <View style={styles.stickyFooter}>
         <CustomButton
           title={LABELS.PLACE_ORDER}
@@ -157,12 +158,15 @@ export default function CartReviewScreen() {
 }
 
 const styles = StyleSheet.create({
+  listHeaderWrapper: {
+    paddingBottom: vh(10),
+  },
   container: {
     flex: 1,
   },
   scrollContent: {
     padding: vw(16),
-    paddingBottom: vh(90),
+    // paddingBottom: vh(90),
   },
   sectionTitle: {
     fontSize: vw(18),
@@ -212,6 +216,8 @@ const styles = StyleSheet.create({
     paddingVertical: vh(10),
     borderBottomWidth: vh(1),
     borderColor: COLORS.BORDER_LIGHT,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   itemName: {
     fontSize: vw(15),
@@ -234,4 +240,7 @@ const styles = StyleSheet.create({
     borderTopColor: COLORS.BORDER_LIGHT,
     marginBottom: vh(20),
   },
+  orderSummaryWrapper: {
+    marginBottom: vh(65)
+  }
 });
