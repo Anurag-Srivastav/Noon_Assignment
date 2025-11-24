@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  FlatList,
 } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import OrderSummary from "../components/OrderSummary";
@@ -29,6 +30,40 @@ export default function CartReviewScreen() {
   const [loading, setLoading] = useState(true);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const { renderShimmer } = useShimmer(SCREENS.CART_REVIEW);
+
+  const handleSelectCard = (cardNumber: string) => {
+    setSelectedCard(cardNumber);
+  };
+
+  const renderPaymentMethod = ({ item }: { item: PaymentMethod }) => (
+    <TouchableOpacity
+      key={item.id}
+      onPress={() => handleSelectCard(item.cardNumber)}
+      style={[styles.cardOption, selectedCard === item.cardNumber && styles.cardOptionSelected]}
+    >
+      <View style={styles.cardContent}>
+        <Icon 
+          name={item.cardIcon} 
+          size={vw(20)} 
+          color={selectedCard === item.cardNumber ? COLORS.WHITE : COLORS.BLACK}
+        />
+        <Text style={[styles.cardText, selectedCard === item.cardNumber && styles.cardTextSelected]}>
+          {LABELS.CARD_ENDING} {item.cardNumber}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  const renderCartItem = ({ item }: { item: typeof cartItems[0] }) => (
+    <View style={styles.orderItem}>
+      <Text style={styles.itemName}>
+        {item.product.name} × {item.quantity}
+      </Text>
+      <Text style={styles.itemPrice}>
+        ₹{item.product.price * item.quantity}
+      </Text>
+    </View>
+  );
 
   useEffect(() => {
     const loadPaymentMethods = async () => {
@@ -85,50 +120,24 @@ export default function CartReviewScreen() {
           </View>
         )}
 
-        {paymentMethods.map((method) => (
-          <TouchableOpacity
-            key={method.id}
-            onPress={() => setSelectedCard(method.cardNumber)}
-            style={[
-              styles.cardOption,
-              selectedCard === method.cardNumber && styles.cardOptionSelected,
-            ]}
-          >
-            <View style={styles.cardContent}>
-              <Icon 
-                name={method.cardIcon} 
-                size={vw(20)} 
-                color={selectedCard === method.cardNumber ? COLORS.WHITE : COLORS.BLACK}
-              />
-              <Text style={[
-                styles.cardText,
-                selectedCard === method.cardNumber && styles.cardTextSelected,
-              ]}>
-                {LABELS.CARD_ENDING} {method.cardNumber}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        <FlatList
+          data={paymentMethods}
+          keyExtractor={item => item.id.toString()}
+          renderItem={renderPaymentMethod}
+          scrollEnabled={false}
+        />
 
         {/* Items Review */}
         <View style={styles.itemsSection}>
           <Text style={styles.sectionTitle}>
             {LABELS.ORDER_ITEMS}
           </Text>
-
-          {cartItems.map((item) => (
-            <View
-              key={item.product.id}
-              style={styles.orderItem}
-            >
-              <Text style={styles.itemName}>
-                {item.product.name} × {item.quantity}
-              </Text>
-              <Text style={styles.itemPrice}>
-                ₹{item.product.price * item.quantity}
-              </Text>
-            </View>
-          ))}
+          <FlatList
+            data={cartItems}
+            keyExtractor={item => item.product.id.toString()}
+            renderItem={renderCartItem}
+            scrollEnabled={false}
+          />
         </View>
 
         {/* Pricing Summary */}
