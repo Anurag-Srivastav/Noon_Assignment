@@ -144,6 +144,7 @@ export const ICONS = {
   CART_OUTLINE: 'cart-outline',
   CART: 'cart',
   FLASH: 'flash-sharp',
+  STAR_ICON: 'star',
   
   // Emoji/Unicode
   STAR: '⭐',
