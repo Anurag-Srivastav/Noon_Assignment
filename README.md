@@ -44,13 +44,20 @@ Custom hooks such as `useSearch` and `useCartItem` are used throughout the app t
 ## LFU Cache Implementation in Async for Search Optimization
 An LFU (Least Frequently Used) cache has been implemented to optimize search result caching through the API. This ensures that frequently searched queries are quickly retrieved, improving performance and reducing redundant data processing. The LFU cache logic is fully integrated with Redux and the search flow for efficient state management.
 
+## Persistent Cart & Search Caching
+
+- **Cart and search history are cached using Redux Persist.**
+- When you add items to your cart or perform searches, this data is saved locally on your device.
+- If you close (kill) the app and reopen it later, your cart contents and recent searches will be restored automatically.
+- This ensures a seamless shopping experience, allowing you to resume where you left off without losing your cart or search history.
+
 ## Real API Simulation
 All features in this app are a real simulation of APIs. The data flow, search, cart management, and product operations mimic real-world asynchronous API interactions, providing a realistic development and testing environment.
 
 
 ## Working Demo Video
 To view the working video of the application, visit:
-[https://drive.google.com/file/d/1CGGciUKvFiB_jOZvxaeWLZ7e1Hcg8Nki/view?usp=sharing](https://drive.google.com/file/d/1CGGciUKvFiB_jOZvxaeWLZ7e1Hcg8Nki/view?usp=sharing)
+[https://drive.google.com/file/d/1MtbDxV6MKV4UaOmppn8GYL5nVv_5ZA7x/view?usp=sharing](https://drive.google.com/file/d/1MtbDxV6MKV4UaOmppn8GYL5nVv_5ZA7x/view?usp=sharing)
 
 ---
 
