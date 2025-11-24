@@ -60,6 +60,7 @@ export const useShimmer = (screen: ShimmerScreen): UseShimmerReturn => {
               value=""
               onChangeText={() => {}}
               onPressIcon={() => {}}
+              style={styles.searchBarNoMargin}
             />
             <View style={styles.searchGrid}>
               {Array.from({ length: 6 }).map((_, index) => (
@@ -212,5 +213,8 @@ const styles = StyleSheet.create({
   },
   cartReviewSpacing3: {
     marginBottom: vh(20),
+  },
+  searchBarNoMargin: {
+    marginHorizontal: 0,
   },
 });

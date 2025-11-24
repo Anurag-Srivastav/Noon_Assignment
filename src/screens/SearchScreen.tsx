@@ -85,11 +85,6 @@ export default function SearchScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery]);
 
-
-  if (loading) {
-    return renderShimmer();
-  }
-
   const renderRecentSearchTag = ({ item }: { item: string }) => (
     <Tag key={item} text={item} onPress={() => handleTagPress(item)} />
   );

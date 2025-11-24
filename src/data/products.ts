@@ -13,7 +13,7 @@ const productItems: Product[] = [
     id: "p1",
     name: "Wireless Headphones",
     price: 2499,
-    rating: 4.5,
+    rating: 2.5,
     images: [
       "https://images.pexels.com/photos/374777/pexels-photo-374777.jpeg?auto=compress&cs=tinysrgb&w=800",
       "https://images.pexels.com/photos/339465/pexels-photo-339465.jpeg?auto=compress&cs=tinysrgb&w=800",
