@@ -88,7 +88,7 @@ export const useShimmer = (screen: ShimmerScreen): UseShimmerReturn => {
           <SafeAreaView style={styles.productDetailsSafe}>
             <CustomHeader title={LABELS.LOADING} />
             <ScrollView contentContainerStyle={styles.productDetailsContent}>
-              <View style={[styles.productDetailsImage, { width: CAROUSEL_SIZE, height: CAROUSEL_SIZE }]} />
+              <ShimmerLoader height={350} width="100%" style={styles.productDetailsSpacing1} />
               <ShimmerLoader height={28} width="80%" style={styles.productDetailsSpacing1} />
               <ShimmerLoader height={16} width="100%" style={styles.productDetailsSpacing2} />
               <ShimmerLoader height={16} width="90%" style={styles.productDetailsSpacing1} />
@@ -97,8 +97,6 @@ export const useShimmer = (screen: ShimmerScreen): UseShimmerReturn => {
               <ShimmerLoader height={60} width="100%" style={styles.productDetailsSpacing1} />
               <ShimmerLoader height={20} width="40%" style={styles.productDetailsSpacing4} />
               <ShimmerLoader height={40} width="100%" />
-              <ShimmerLoader height={40} width="100%" style={styles.productDetailsSpacing4} />
-              <ShimmerLoader height={40} width="100%" style={styles.productDetailsSpacing4} />
             </ScrollView>
           </SafeAreaView>
         );
@@ -195,7 +193,7 @@ const styles = StyleSheet.create({
     marginBottom: vh(20),
   },
   productDetailsSpacing4: {
-    marginTop: vh(10),
+    marginVertical: vh(10),
   },
 
   // Cart Review Screen Styles

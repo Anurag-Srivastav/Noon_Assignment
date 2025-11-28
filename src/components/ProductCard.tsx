@@ -8,6 +8,7 @@ import StarRating from "./StarRating";
 import { COLORS, LABELS, SCREENS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
 import QuantityControl from "./QuantityControl";
+import formatRupees from "../utils/formatAmount";
 
 type Props = {
   product: Product;
@@ -39,7 +40,7 @@ function ProductCard({
       </Text>
 
       <View style={styles.priceRatingContainer}>
-        <Text style={styles.price}>₹{product?.price}</Text>
+        <Text style={styles.price}>{formatRupees(product?.price)}</Text>
         <StarRating rating={product?.rating} size={vw(7)} />
       </View>
 

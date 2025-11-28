@@ -7,6 +7,7 @@ import { COLORS, ICONS, LABELS, SCREENS } from "../constants";
 import { vh, vw } from "../utils/dimensions";
 import { useCartItem } from "../hooks/useCartItem";
 import { useNavigation } from "@react-navigation/native";
+import formatRupees from "../utils/formatAmount";
 
 const StickyCartBar = () => {
   const insets = useSafeAreaInsets();
@@ -26,7 +27,7 @@ const StickyCartBar = () => {
         <Icon name={ICONS.CART_OUTLINE} size={20} color={COLORS.GRAY_DARK} />
         <View>
           <Text style={styles.items}>{totalItems} {LABELS.ITEMS}</Text>
-          <Text style={styles.price}>₹ {totalAmount}</Text>
+          <Text style={styles.price}>{formatRupees(totalAmount)}</Text>
         </View>
       </View>
 

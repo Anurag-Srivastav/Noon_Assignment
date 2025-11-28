@@ -52,6 +52,7 @@ import { COLORS, LABELS, SCREENS } from '../constants';
 import { useShimmer } from '../hooks/useShimmer';
 import { vh, vw } from '../utils/dimensions';
 import { getPaymentMethods, PaymentMethod } from '../domain';
+import formatRupees from '../utils/formatAmount';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -100,7 +101,7 @@ export default function CartReviewScreen() {
         {item.product.name} × {item.quantity}
       </Text>
       <Text style={styles.itemPrice}>
-        ₹{item.product.price * item.quantity}
+        {formatRupees((item.product.price) * item.quantity)}
       </Text>
     </View>
   );

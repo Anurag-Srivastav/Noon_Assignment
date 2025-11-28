@@ -9,6 +9,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import StarRating from './StarRating';
 import { SCREENS, COLORS } from '../constants';
 import QuantityControl from './QuantityControl';
+import formatRupees from '../utils/formatAmount';
 
 type Props = {
   item: CartItem;
@@ -39,7 +40,7 @@ function CartItemGrid({ item }: Props) {
           {product?.name}
         </Text>
 
-        <Text style={styles.price}>₹{product?.price.toFixed(2)}</Text>
+        <Text style={styles.price}>{formatRupees(product?.price)}</Text>
 
         <StarRating rating={product?.rating} size={vw(7)} />
 

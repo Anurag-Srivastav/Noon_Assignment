@@ -3,13 +3,14 @@ import { View, Text, StyleSheet } from "react-native";
 import { vw, vh } from "../utils/dimensions";
 import { useCartItem } from "../hooks/useCartItem";
 import { COLORS, DELIVERY, TAX, LABELS } from "../constants";
+import formatRupees from "../utils/formatAmount";
 
 function OrderSummary() {
   const { totalAmount, totalItems } = useCartItem();
 
   const deliveryFee = totalItems > 0 ? DELIVERY.FEE : 0;
   const tax = Math.round(totalAmount * TAX.GST_RATE);
-  const total = totalAmount + tax + deliveryFee;
+  const total = totalAmount + tax + deliveryFee
 
   return (
     <View style={styles.container}>
@@ -17,24 +18,24 @@ function OrderSummary() {
 
       <View style={styles.row}>
         <Text style={styles.label}>{LABELS.SUBTOTAL}</Text>
-        <Text style={styles.value}>₹{totalAmount.toFixed(2)}</Text>
+        <Text style={styles.value}>{formatRupees(totalAmount)}</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>{LABELS.DELIVERY_FEE}</Text>
-        <Text style={styles.value}>₹{deliveryFee.toFixed(2)}</Text>
+        <Text style={styles.value}>{formatRupees(deliveryFee)}</Text>
       </View>
 
       <View style={styles.row}>
         <Text style={styles.label}>{LABELS.TAX}</Text>
-        <Text style={styles.value}>₹{tax.toFixed(2)}</Text>
+        <Text style={styles.value}>{formatRupees(tax)}</Text>
       </View>
 
       <View style={styles.divider} />
 
       <View style={styles.totalRow}>
         <Text style={styles.totalLabel}>{LABELS.TOTAL}</Text>
-        <Text style={styles.totalValue}>₹{total.toFixed(2)}</Text>
+        <Text style={styles.totalValue}>{formatRupees(total)}</Text>
       </View>
     </View>
   );
